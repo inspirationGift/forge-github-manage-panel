@@ -1,0 +1,29 @@
+modules:
+  jira:adminPage:
+    - key: forge-github-manage-panel-admin-page
+      resource: main
+      resolver:
+        function: resolver
+      render: native
+      title: GitHub Integration
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: src/frontend/index.jsx
+app:
+  runtime:
+    name: nodejs22.x
+    memoryMB: 256
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/aca136cd-bbcc-4ed7-99c3-f315430c96b9
+permissions:
+  scopes:
+    - write:jira-work
+    - read:jira-work
+    - storage:app
+  external:
+    fetch:
+      backend:
+        - address: https://api.github.com
