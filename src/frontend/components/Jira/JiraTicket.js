@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Text, Lozenge, Link, Inline } from "@forge/react";
-import { invoke } from "@forge/bridge";
+import { apiService } from "../../services/apiService";
 import { getTicketKeyFromBranchName } from "../Utils";
 
 export const JiraTicket = ({ branchName, mergePr, onMergeCallback }) => {
@@ -14,7 +14,7 @@ export const JiraTicket = ({ branchName, mergePr, onMergeCallback }) => {
 
     setTransitioning(true);
     try {
-      await invoke("transitionTicket", { key });
+      await apiService.transitionTicket(key);
       console.log("Jira ticket transitioned successfully");
       // Refresh ticket data to get updated status
       getTicket().then(() => {
@@ -39,7 +39,7 @@ export const JiraTicket = ({ branchName, mergePr, onMergeCallback }) => {
 
     setLoading(true);
     try {
-      const ticket = await invoke("getTicket", { key: issueKey });
+      const ticket = await apiService.getTicket(issueKey);
       setKey(ticket.key);
       setStatus(ticket?.fields?.status?.name || "Unknown");
     } catch (error) {

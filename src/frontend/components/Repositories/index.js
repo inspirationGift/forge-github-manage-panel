@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Inline, Text, Heading, Stack, Box, xcss } from "@forge/react";
-import { invoke } from "@forge/bridge";
+import { apiService } from "../../services/apiService";
 import { Repository } from "./Repository";
 import { RepositorySearchPanel } from "./RepositorySearchPanel";
 import { PullRequestComponent } from "./PullRequest";
@@ -24,7 +24,7 @@ export const Repositories = () => {
   };
 
   useEffect(() => {
-    invoke("getRepositories")
+    apiService.getRepositories()
       .then(repos => {
         setRepositories(repos);
         setLoading(false);

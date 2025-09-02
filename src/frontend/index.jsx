@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from "react";
 import ForgeReconciler, {
   Text,
-  Heading,
   Button,
   Inline,
-  Stack,
   Box,
 } from "@forge/react";
-import { invoke } from "@forge/bridge";
 import { Repositories } from "./components/Repositories";
 import { ManageApiKey } from "./components/ManageApiKey";
+import { apiService } from "./services/apiService";
 
 const App = () => {
   const [isApiKeyAdded, setIsApiKeyAdded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    invoke("isApiKeyAdded").then(result => {
+    apiService.isApiKeyAdded().then(result => {
       setIsApiKeyAdded(result.isApiKeyAdded);
       setIsLoading(false);
     });
@@ -27,7 +25,7 @@ const App = () => {
   }
 
   function handleRemoveToken() {
-    invoke("removeApiKey").then(() => setIsApiKeyAdded(false));
+    apiService.removeApiKey().then(() => setIsApiKeyAdded(false));
   }
 
   if (isLoading) return <Text>Loading...</Text>;

@@ -11,8 +11,7 @@ import {
   Icon,
   Text,
 } from "@forge/react";
-import { invoke } from "@forge/bridge";
-import { getTicketKeyFromBranchName } from "../../Utils";
+import { apiService } from "../../../services/apiService";
 import { JiraTicket } from "../../Jira/JiraTicket";
 
 const containerStyle = xcss({
@@ -79,11 +78,7 @@ export const PullRequestComponent = props => {
     setSuccessMessage(null);
 
     // Merge the pull request
-    invoke("mergePullRequest", {
-      pullNumber: pr.number,
-      repoName: props.repoName,
-      owner: props.owner,
-    })
+    apiService.mergePullRequest(props.owner, props.repoName, pr.number)
       .then(() => {
         setSuccessMessage("Pull request merged successfully!");
       })
@@ -93,10 +88,7 @@ export const PullRequestComponent = props => {
         );
       });
 
-    invoke("getPullRequests", {
-      owner: props.owner,
-      repoName: props.repoName,
-    })
+    apiService.getPullRequests(props.owner, props.repoName)
       .then(updatedPRs => {
         if (!updatedPRs) {
           setError("Failed to refresh pull request list after merge.");
@@ -120,7 +112,7 @@ export const PullRequestComponent = props => {
     setError(null);
     setLoading(true);
 
-    invoke("getPullRequests", { owner: props.owner, repoName: props.repoName })
+    apiService.getPullRequests(props.owner, props.repoName)
       .then(prs => {
         setPullRequests(prs);
         setLoading(false);
