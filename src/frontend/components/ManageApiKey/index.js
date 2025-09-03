@@ -1,5 +1,5 @@
 import React from 'react';
-import { invoke } from '@forge/bridge';
+import { apiService } from '../../services/apiService';
 import {
     Form,
     FormHeader,
@@ -17,7 +17,7 @@ export const ManageApiKey = ({ onSuccess }) => {
     const { handleSubmit, register, getFieldId } = useForm();
 
     const tokenData = async (data) => {
-        await invoke('saveApiKey', { apiKey: data.token });
+        await apiService.saveApiKey(data.token);
         onSuccess?.();
     };
 
